@@ -150,6 +150,7 @@ namespace Palindromes
                 }
             }
             if (remainder != 0) result.Add(remainder);
+            result.Reverse();
             return result;
         }
 
@@ -157,7 +158,7 @@ namespace Palindromes
         /// Initializes the check for how much iterations are needed to convert a number to a palindrome through revesed addition
         /// </summary>
         /// <returns>Number of iterations. If equals -1 then the algorithm has ran out of bounds.</returns>
-        public int Run()
+        public int Run(RunMode mode = RunMode.Standard)
         {
             _numOfSteps = 0;
             List<int> number = new List<int>(_initialNum);
@@ -165,10 +166,17 @@ namespace Palindromes
             {
                 number = AddReverse(number);
                 _numOfSteps++;
+                if (mode.Equals(RunMode.Verbose)) Console.WriteLine("[Test of: {0}] Iteration: {1}; after reverse addition: {2}", InitialNumber, _numOfSteps, _lts(number));
                 if (_numOfSteps > _maxNumOfSteps) return -1; //throw new ApplicationException(String.Format("Amount of steps has exceeded {0}. In order to avoid indefinite loop execution of this method has stopped.", MaxSteps));
             }
             _palindrome = number;
             return _numOfSteps;
+        }
+
+        public enum RunMode
+        {
+            Verbose,
+            Standard
         }
     }
 }
